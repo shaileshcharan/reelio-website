@@ -127,6 +127,32 @@ p{margin:0}
 .nav-menu{display:none;margin-left:auto;align-items:center;gap:.6em;padding:.8em 1.1em;border-radius:999px;border:1.5px solid currentColor;background:var(--nav-pill);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;text-transform:uppercase}
 .nav-menu i{display:block;width:16px;height:1.5px;background:currentColor;box-shadow:0 5px 0 currentColor;transform:translateY(-2.5px)}
 @media (max-width:860px){.nav-links,.nav .nav-cta{display:none}.nav-menu{display:inline-flex}}
+/* sound toggle: equalizer bars dance while playing, flatten and get struck through when muted */
+.snd{position:relative;flex:none;display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:1.5px solid currentColor;background:var(--nav-pill);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .35s var(--ease),background-color .3s,color .3s}
+@media (hover:hover){.snd:hover{background:var(--nav-fg);color:var(--nav-on)}}
+.snd:active{transform:scale(.88)}
+.snd:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.snd-bars{display:flex;align-items:center;gap:2.5px;height:16px}
+.snd-bars i{display:block;width:2.5px;height:16px;border-radius:2px;background:currentColor;transform:scaleY(.16);transition:transform .45s var(--ease)}
+.snd[data-state="on"] .snd-bars i{animation:eq .9s ease-in-out infinite alternate}
+.snd[data-state="on"] .snd-bars i:nth-child(2){animation-duration:.62s;animation-delay:-.3s}
+.snd[data-state="on"] .snd-bars i:nth-child(3){animation-duration:1.05s;animation-delay:-.5s}
+.snd[data-state="on"] .snd-bars i:nth-child(4){animation-duration:.74s;animation-delay:-.15s}
+.snd[data-state="on"] .snd-bars i:nth-child(5){animation-duration:.86s;animation-delay:-.6s}
+.snd[data-state="idle"] .snd-bars i{animation:idle 1.8s ease-in-out infinite}
+.snd[data-state="idle"] .snd-bars i:nth-child(2){animation-delay:.12s}
+.snd[data-state="idle"] .snd-bars i:nth-child(3){animation-delay:.24s}
+.snd[data-state="idle"] .snd-bars i:nth-child(4){animation-delay:.36s}
+.snd[data-state="idle"] .snd-bars i:nth-child(5){animation-delay:.48s}
+.snd-x{position:absolute;left:50%;top:50%;width:26px;height:1.5px;margin:-.75px 0 0 -13px;border-radius:2px;background:currentColor;transform:rotate(-45deg) scaleX(0);transition:transform .45s var(--ease)}
+.snd[data-state="off"] .snd-x{transform:rotate(-45deg) scaleX(1)}
+.snd::after{content:"";position:absolute;inset:-1.5px;border-radius:50%;border:1.5px solid currentColor;opacity:0;pointer-events:none}
+.snd.pop::after{animation:sndPop .65s var(--ease)}
+@keyframes eq{0%{transform:scaleY(.22)}100%{transform:scaleY(1)}}
+@keyframes idle{0%,100%{transform:scaleY(.16)}50%{transform:scaleY(.5)}}
+@keyframes sndPop{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.75)}}
+@media (max-width:860px){.snd{margin-left:auto;width:42px;height:42px}.nav-menu{margin-left:0}}
+@media (prefers-reduced-motion:reduce){.snd[data-state="on"] .snd-bars i{animation:none}.snd[data-state="on"] .snd-bars i:nth-child(odd){transform:scaleY(.55)}.snd[data-state="on"] .snd-bars i:nth-child(even){transform:scaleY(.9)}.snd[data-state="idle"] .snd-bars i{animation:none}}
 
 .menu{position:fixed;inset:0;z-index:55;background:var(--red);color:var(--white);display:flex;flex-direction:column;justify-content:space-between;padding-top:calc(env(safe-area-inset-top,0px) + 96px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 28px);animation:menuIn .6s var(--ease)}
 .menu ul{list-style:none;margin:0;padding:0}
@@ -565,6 +591,8 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
       </ul>
     </nav>
     <a class="btn btn-small nav-cta" href="#plans">Free week <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <button class="snd" type="button" data-state="idle" aria-pressed="false" aria-label="Play music"><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="snd-x" aria-hidden="true"></span></button>
+    <audio id="bgm" src="paper-planes.mp3" loop preload="auto"></audio>
     <button class="nav-menu" type="button" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i><span>Menu</span></button>
   </div>
 </header>
@@ -1069,6 +1097,52 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
   }
   if (hasG) gsap.ticker.add(() => frame(performance.now()));
   else { const loop = t => { frame(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+
+  /* ---------- background music (40%, looped) ---------- */
+  (() => {
+    const a = $('#bgm'), btn = $('.snd'); if (!a || !btn) return;
+    const LEVEL = 0.4, KEY = 'reelio-sound';
+    let want = 'on'; try { if (localStorage.getItem(KEY) === 'off') want = 'off'; } catch (e) {}
+    let gain = null, ctx = null, raf = 0, playing = false;
+    // iPhones ignore element volume, so there the sound is routed through a Web Audio gain node instead
+    a.volume = 0.5; const volLocked = Math.abs(a.volume - 0.5) > 0.01; a.volume = 0;
+    const setVol = v => { if (gain) gain.gain.value = v; else a.volume = Math.max(0, Math.min(1, v)); };
+    const getVol = () => (gain ? gain.gain.value : a.volume);
+    function fade(to, ms, done) {
+      cancelAnimationFrame(raf); const from = getVol(), t0 = performance.now();
+      const step = t => { const k = Math.min(1, (t - t0) / ms); setVol(from + (to - from) * k * (2 - k)); if (k < 1) raf = requestAnimationFrame(step); else if (done) done(); };
+      raf = requestAnimationFrame(step);
+    }
+    function useWebAudio() {
+      if (gain || !volLocked) return;
+      try { const AC = window.AudioContext || window.webkitAudioContext; ctx = new AC(); const src = ctx.createMediaElementSource(a); gain = ctx.createGain(); gain.gain.value = 0; src.connect(gain).connect(ctx.destination); a.volume = 1; } catch (e) { gain = null; }
+    }
+    function show(state) { btn.dataset.state = state; const on = state === 'on'; btn.setAttribute('aria-pressed', String(on)); btn.setAttribute('aria-label', on ? 'Mute music' : 'Play music'); }
+    function pop() { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
+    const evs = ['pointerdown', 'keydown', 'touchend'];
+    function unlock(e) { if (e.target && e.target.closest && e.target.closest('.snd')) return; if (want === 'on' && !playing) start(true); }
+    const arm = () => evs.forEach(n => addEventListener(n, unlock, { capture: true, passive: true }));
+    const disarm = () => evs.forEach(n => removeEventListener(n, unlock, { capture: true }));
+    function start(gesture) {
+      if (gesture) useWebAudio();
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+      setVol(0);
+      return a.play().then(() => { playing = true; show('on'); disarm(); fade(LEVEL, 1400); }, () => { playing = false; if (want === 'on') show('idle'); });
+    }
+    function stop() { playing = false; show('off'); fade(0, 350, () => { if (!playing) a.pause(); }); }
+    btn.addEventListener('click', () => {
+      pop();
+      if (playing) { want = 'off'; stop(); } else { want = 'on'; start(true); }
+      try { localStorage.setItem(KEY, want); } catch (e) {}
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (playing) { a.pause(); a.dataset.resume = '1'; } }
+      else if (a.dataset.resume) { delete a.dataset.resume; a.play().catch(() => {}); }
+    });
+    a.addEventListener('error', () => { playing = false; show('off'); });
+    // browsers block sound until the visitor interacts, so try now and otherwise start on the first tap, click or key
+    if (want === 'off') show('off'); else { show('idle'); arm(); start(false); }
+  })();
 
   /* ---------- menu + anchors ---------- */
   const menu = $('#menu'), menuBtn = $('.nav-menu');
