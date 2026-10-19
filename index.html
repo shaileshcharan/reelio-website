@@ -109,6 +109,25 @@ p{margin:0}
 @keyframes sweep{to{stroke-dashoffset:0}}
 @keyframes num{0%{opacity:0;transform:scale(1.45);filter:blur(10px)}20%{opacity:1;transform:scale(1);filter:blur(0)}80%{opacity:1;transform:scale(.97);filter:blur(0)}100%{opacity:0;transform:scale(.82);filter:blur(6px)}}
 @keyframes leaderOut{to{clip-path:inset(0 0 100% 0);visibility:hidden}}
+/* enter gate: after 3-2-1 the leader holds on a play button; the visitor's tap starts the music and wipes the site in */
+html.gated .leader{animation:none;pointer-events:auto;cursor:pointer}
+html.gated.entering .leader{animation:leaderOut .8s var(--ease) forwards;pointer-events:none}
+.leader-enter{position:absolute;left:50%;top:50%;width:48%;aspect-ratio:1;margin:0;padding:0;border:0;border-radius:50%;background:var(--white);color:var(--red);display:grid;place-items:center;align-content:center;gap:8px;font-family:var(--f-mono);font-size:clamp(.6rem,1.6vmin,.74rem);letter-spacing:.16em;text-transform:uppercase;cursor:pointer;opacity:0;transform:translate(-50%,-50%) scale(.55);pointer-events:none;transition:opacity .45s var(--ease),transform .8s var(--ease);-webkit-tap-highlight-color:transparent}
+.leader .leader-enter .spk{position:static;inset:auto;width:34%;height:auto;overflow:visible}
+.leader-enter .spk-w1{animation:wave 1.15s ease-in-out infinite}
+.leader-enter .spk-w2{animation:wave 1.15s ease-in-out .2s infinite}
+.leader-enter::before{content:"";position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--white);animation:ring 1.9s var(--ease) infinite;pointer-events:none}
+.leader-enter:focus-visible{outline:2px solid var(--white);outline-offset:6px}
+@media (hover:hover){.leader-enter:hover{transform:translate(-50%,-50%) scale(1.06)}}
+.leader-foot{position:absolute;left:0;right:0;bottom:max(28px,env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:10px;opacity:0;transform:translateY(10px);transition:opacity .5s var(--ease) .15s,transform .7s var(--ease) .15s;pointer-events:none}
+.leader-foot p{margin:0;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;opacity:.85}
+.leader-quiet{background:none;border:0;color:inherit;font:inherit;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;opacity:.7;cursor:pointer;padding:6px 10px}
+.leader-quiet:hover{opacity:1}
+html.gate-ready .leader-enter{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+html.gate-ready .leader-foot{opacity:1;transform:none;pointer-events:auto}
+html.gate-ready .leader .sweep{animation:none;stroke-dashoffset:0;opacity:.14}
+html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opacity:0;transition-duration:.5s}
+@keyframes ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.55);opacity:0}}
 
 /* nav */
 .nav{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);--nav-fg:var(--white);--nav-pill:rgba(214,14,10,.62);--nav-on:var(--red);color:var(--nav-fg);transition:color .4s var(--ease)}
@@ -127,32 +146,30 @@ p{margin:0}
 .nav-menu{display:none;margin-left:auto;align-items:center;gap:.6em;padding:.8em 1.1em;border-radius:999px;border:1.5px solid currentColor;background:var(--nav-pill);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;text-transform:uppercase}
 .nav-menu i{display:block;width:16px;height:1.5px;background:currentColor;box-shadow:0 5px 0 currentColor;transform:translateY(-2.5px)}
 @media (max-width:860px){.nav-links,.nav .nav-cta{display:none}.nav-menu{display:inline-flex}}
-/* sound toggle: equalizer bars dance while playing, flatten and get struck through when muted */
+/* sound toggle: speaker whose waves broadcast while playing; waves retract and an X draws in when muted */
 .snd{position:relative;flex:none;display:inline-grid;place-items:center;width:44px;height:44px;padding:0;border-radius:50%;border:1.5px solid currentColor;background:var(--nav-pill);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .35s var(--ease),background-color .3s,color .3s}
 @media (hover:hover){.snd:hover{background:var(--nav-fg);color:var(--nav-on)}}
 .snd:active{transform:scale(.88)}
 .snd:focus-visible{outline:2px solid currentColor;outline-offset:3px}
-.snd-bars{display:flex;align-items:center;gap:2.5px;height:16px}
-.snd-bars i{display:block;width:2.5px;height:16px;border-radius:2px;background:currentColor;transform:scaleY(.16);transition:transform .45s var(--ease)}
-.snd[data-state="on"] .snd-bars i{animation:eq .9s ease-in-out infinite alternate}
-.snd[data-state="on"] .snd-bars i:nth-child(2){animation-duration:.62s;animation-delay:-.3s}
-.snd[data-state="on"] .snd-bars i:nth-child(3){animation-duration:1.05s;animation-delay:-.5s}
-.snd[data-state="on"] .snd-bars i:nth-child(4){animation-duration:.74s;animation-delay:-.15s}
-.snd[data-state="on"] .snd-bars i:nth-child(5){animation-duration:.86s;animation-delay:-.6s}
-.snd[data-state="idle"] .snd-bars i{animation:idle 1.8s ease-in-out infinite}
-.snd[data-state="idle"] .snd-bars i:nth-child(2){animation-delay:.12s}
-.snd[data-state="idle"] .snd-bars i:nth-child(3){animation-delay:.24s}
-.snd[data-state="idle"] .snd-bars i:nth-child(4){animation-delay:.36s}
-.snd[data-state="idle"] .snd-bars i:nth-child(5){animation-delay:.48s}
-.snd-x{position:absolute;left:50%;top:50%;width:26px;height:1.5px;margin:-.75px 0 0 -13px;border-radius:2px;background:currentColor;transform:rotate(-45deg) scaleX(0);transition:transform .45s var(--ease)}
-.snd[data-state="off"] .snd-x{transform:rotate(-45deg) scaleX(1)}
+.spk{width:21px;height:21px;overflow:visible;display:block}
+.spk-cone{fill:currentColor;stroke:currentColor;stroke-width:1.2;stroke-linejoin:round;transform-box:fill-box;transform-origin:70% 50%}
+.spk-w1,.spk-w2,.spk-x{fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}
+.spk-w1,.spk-w2{stroke-dasharray:1 1;stroke-dashoffset:0;transform-box:fill-box;transform-origin:0 50%;transition:stroke-dashoffset .45s var(--ease),opacity .35s}
+.spk-w2{transition-delay:.06s}
+.spk-x{stroke-dasharray:1 1;stroke-dashoffset:1;transition:stroke-dashoffset .45s var(--ease)}
+.snd[data-state="on"] .spk-w1{animation:wave 1.15s ease-in-out infinite}
+.snd[data-state="on"] .spk-w2{animation:wave 1.15s ease-in-out .2s infinite}
+.snd[data-state="idle"] .spk-w1,.snd[data-state="idle"] .spk-w2{opacity:.45}
+.snd[data-state="off"] .spk-w1,.snd[data-state="off"] .spk-w2{stroke-dashoffset:1;opacity:0}
+.snd[data-state="off"] .spk-x{stroke-dashoffset:0;transition-delay:.15s}
 .snd::after{content:"";position:absolute;inset:-1.5px;border-radius:50%;border:1.5px solid currentColor;opacity:0;pointer-events:none}
 .snd.pop::after{animation:sndPop .65s var(--ease)}
-@keyframes eq{0%{transform:scaleY(.22)}100%{transform:scaleY(1)}}
-@keyframes idle{0%,100%{transform:scaleY(.16)}50%{transform:scaleY(.5)}}
+.snd.pop .spk-cone{animation:thump .45s var(--ease)}
+@keyframes wave{0%,100%{opacity:1;transform:translateX(0)}50%{opacity:.3;transform:translateX(1.4px)}}
+@keyframes thump{35%{transform:scale(.78)}}
 @keyframes sndPop{0%{opacity:.85;transform:scale(1)}100%{opacity:0;transform:scale(1.75)}}
 @media (max-width:860px){.snd{margin-left:auto;width:42px;height:42px}.nav-menu{margin-left:0}}
-@media (prefers-reduced-motion:reduce){.snd[data-state="on"] .snd-bars i{animation:none}.snd[data-state="on"] .snd-bars i:nth-child(odd){transform:scaleY(.55)}.snd[data-state="on"] .snd-bars i:nth-child(even){transform:scaleY(.9)}.snd[data-state="idle"] .snd-bars i{animation:none}}
+@media (prefers-reduced-motion:reduce){.snd .spk-w1,.snd .spk-w2{animation:none!important}}
 
 .menu{position:fixed;inset:0;z-index:55;background:var(--red);color:var(--white);display:flex;flex-direction:column;justify-content:space-between;padding-top:calc(env(safe-area-inset-top,0px) + 96px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 28px);animation:menuIn .6s var(--ease)}
 .menu ul{list-style:none;margin:0;padding:0}
@@ -563,16 +580,18 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
 
 <a class="skip" href="#about">Skip to content</a>
 
-<div class="leader" aria-hidden="true">
+<div class="leader" role="dialog" aria-label="Welcome to REELIO">
   <div class="leader-in">
     <svg viewBox="0 0 200 200">
       <line class="ll" x1="-40" y1="100" x2="240" y2="100"/><line class="ll" x1="100" y1="-40" x2="100" y2="240"/>
       <circle class="lc" cx="100" cy="100" r="96"/><circle class="lc" cx="100" cy="100" r="80"/>
       <circle class="sweep" cx="100" cy="100" r="40" pathLength="100"/>
     </svg>
-    <div class="leader-num"><span>3</span><span>2</span><span>1</span></div>
-    <p class="leader-cap mono">REELIO · Reel 01 · 9:16</p>
+    <div class="leader-num" aria-hidden="true"><span>3</span><span>2</span><span>1</span></div>
+    <p class="leader-cap mono" aria-hidden="true">REELIO · Reel 01 · 9:16</p>
+    <button class="leader-enter" type="button" tabindex="-1" aria-label="Enter the site with sound"><svg class="spk" viewBox="0 0 24 24" aria-hidden="true"><path class="spk-cone" d="M3.6 9.1h3.3l4.5-3.7c.6-.5 1.4-.1 1.4.7v11.8c0 .8-.8 1.2-1.4.7l-4.5-3.7H3.6c-.6 0-1-.4-1-1V10.1c0-.6.4-1 1-1z"/><path class="spk-w1" pathLength="1" d="M15.7 9.2a4 4 0 0 1 0 5.6"/><path class="spk-w2" pathLength="1" d="M18.4 6.5a7.8 7.8 0 0 1 0 11"/><path class="spk-x" pathLength="1" d="M16 9.6l4.8 4.8M20.8 9.6L16 14.4"/></svg><span>Enter</span></button>
   </div>
+  <div class="leader-foot mono"><p>Tap anywhere · sound on</p><button class="leader-quiet" type="button" tabindex="-1">Enter without sound</button></div>
 </div>
 
 <header class="nav" data-on="red">
@@ -591,11 +610,94 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
       </ul>
     </nav>
     <a class="btn btn-small nav-cta" href="#plans">Free week <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-    <button class="snd" type="button" data-state="idle" aria-pressed="false" aria-label="Play music"><span class="snd-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="snd-x" aria-hidden="true"></span></button>
+    <button class="snd" type="button" data-state="idle" aria-pressed="false" aria-label="Play music"><svg class="spk" viewBox="0 0 24 24" aria-hidden="true"><path class="spk-cone" d="M3.6 9.1h3.3l4.5-3.7c.6-.5 1.4-.1 1.4.7v11.8c0 .8-.8 1.2-1.4.7l-4.5-3.7H3.6c-.6 0-1-.4-1-1V10.1c0-.6.4-1 1-1z"/><path class="spk-w1" pathLength="1" d="M15.7 9.2a4 4 0 0 1 0 5.6"/><path class="spk-w2" pathLength="1" d="M18.4 6.5a7.8 7.8 0 0 1 0 11"/><path class="spk-x" pathLength="1" d="M16 9.6l4.8 4.8M20.8 9.6L16 14.4"/></svg></button>
     <audio id="bgm" src="paper-planes.mp3" loop preload="auto"></audio>
     <button class="nav-menu" type="button" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i><span>Menu</span></button>
   </div>
 </header>
+<script>
+/* music + enter gate. Runs early so the countdown can hold before its CSS wipe (1.86s). Browsers only allow sound
+   after the visitor interacts, so: try autoplay; if refused, the countdown ends on an Enter button and that tap starts it. */
+(() => {
+  const d = document, root = d.documentElement, a = d.getElementById('bgm'), btn = d.querySelector('.snd'), leader = d.querySelector('.leader');
+  let enterDone; window.reelioEntered = new Promise(r => (enterDone = r));
+  if (!a || !btn) { setTimeout(enterDone, 1860); return; }
+  const LEVEL = 0.4, KEY = 'reelio-sound';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let want = 'on'; try { if (localStorage.getItem(KEY) === 'off') want = 'off'; } catch (e) {}
+  let gain = null, ctx = null, raf = 0, playing = false, entered = false;
+  // iPhones ignore element volume, so there the sound runs through a Web Audio gain node to stay at 40%
+  a.volume = 0.5; const volLocked = Math.abs(a.volume - 0.5) > 0.01; a.volume = 0;
+  const setVol = v => { if (gain) gain.gain.value = v; else a.volume = Math.max(0, Math.min(1, v)); };
+  const getVol = () => (gain ? gain.gain.value : a.volume);
+  function fade(to, ms, done) {
+    cancelAnimationFrame(raf); const from = getVol(), t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / ms); setVol(from + (to - from) * k * (2 - k)); if (k < 1) raf = requestAnimationFrame(step); else if (done) done(); };
+    raf = requestAnimationFrame(step);
+  }
+  function useWebAudio() {
+    if (gain || !volLocked) return;
+    try { const AC = window.AudioContext || window.webkitAudioContext; ctx = new AC(); const src = ctx.createMediaElementSource(a); gain = ctx.createGain(); gain.gain.value = 0; src.connect(gain).connect(ctx.destination); a.volume = 1; } catch (e) { gain = null; }
+  }
+  function show(state) { btn.dataset.state = state; const on = state === 'on'; btn.setAttribute('aria-pressed', String(on)); btn.setAttribute('aria-label', on ? 'Mute music' : 'Play music'); }
+  function pop() { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
+  const evs = ['pointerdown', 'keydown', 'touchend'];
+  function unlock(e) { if (e.target && e.target.closest && e.target.closest('.snd,.leader')) return; if (want === 'on' && !playing) start(true); }
+  const arm = () => evs.forEach(n => addEventListener(n, unlock, { capture: true, passive: true }));
+  const disarm = () => evs.forEach(n => removeEventListener(n, unlock, { capture: true }));
+  function start(gesture) {
+    if (gesture) useWebAudio();
+    if (ctx && ctx.state === 'suspended') ctx.resume();
+    setVol(0);
+    const p = a.play();
+    p.then(() => { playing = true; show('on'); disarm(); fade(LEVEL, 1200); }, () => { playing = false; if (want === 'on') show('idle'); });
+    return p;
+  }
+  function stop() { playing = false; show('off'); fade(0, 350, () => { if (!playing) a.pause(); }); }
+  btn.addEventListener('click', () => {
+    pop();
+    if (playing) { want = 'off'; stop(); } else { want = 'on'; start(true); }
+    try { localStorage.setItem(KEY, want); } catch (e) {}
+  });
+  d.addEventListener('visibilitychange', () => {
+    if (d.hidden) { if (playing) { a.pause(); a.dataset.resume = '1'; } }
+    else if (a.dataset.resume) { delete a.dataset.resume; a.play().catch(() => {}); }
+  });
+  a.addEventListener('error', () => { playing = false; show('off'); });
+
+  /* ---- enter gate ---- */
+  const enterBtn = d.querySelector('.leader-enter'), quiet = d.querySelector('.leader-quiet');
+  const block = e => { if (root.classList.contains('gated') && !entered) { e.preventDefault(); e.stopPropagation(); } };
+  function enter(withSound) {
+    if (entered) return; entered = true;
+    if (withSound) { want = 'on'; start(true); }
+    else { want = 'off'; show('off'); try { localStorage.setItem(KEY, 'off'); } catch (e) {} }
+    root.classList.add('entering'); enterDone();
+    setTimeout(() => { if (leader) leader.hidden = true; root.classList.remove('gated', 'gate-ready', 'entering'); }, 850);
+  }
+  function openGate() {
+    root.classList.add('gate-ready');
+    if (enterBtn) { enterBtn.tabIndex = 0; enterBtn.focus({ preventScroll: true }); }
+    if (quiet) quiet.tabIndex = 0;
+  }
+  function noGate() { root.classList.remove('gated'); setTimeout(enterDone, 1860); }   // plain countdown, CSS wipes it
+
+  if (want === 'off') { show('off'); noGate(); return; }
+  show('idle'); arm();
+  if (reduce || !leader) { start(false).catch(() => {}); enterDone(); return; }   // no countdown: start on first interaction
+  root.classList.add('gated');                        // hold the countdown so it can turn into the Enter button
+  ['wheel', 'touchmove'].forEach(n => leader.addEventListener(n, block, { passive: false }));
+  leader.addEventListener('click', e => enter(!(quiet && quiet.contains(e.target))));   // a tap during the countdown enters straight away
+  addEventListener('keydown', e => { if (root.classList.contains('gated') && !entered && !(e.target === quiet)) { if (e.key === 'Tab' || e.key === 'Shift') return; e.preventDefault(); enter(true); } });
+  let refused = false;
+  start(false).catch(() => { refused = true; });
+  setTimeout(() => {
+    if (entered) return;
+    if (refused) openGate();                          // sound needs a tap: show Enter
+    else { entered = true; root.classList.add('entering'); enterDone(); setTimeout(() => { if (leader) leader.hidden = true; root.classList.remove('gated', 'entering'); }, 850); }
+  }, 1800);
+})();
+</script>
 
 <div class="menu" id="menu" hidden>
   <nav class="wrap" aria-label="Menu">
@@ -1098,52 +1200,6 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
   if (hasG) gsap.ticker.add(() => frame(performance.now()));
   else { const loop = t => { frame(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
 
-  /* ---------- background music (40%, looped) ---------- */
-  (() => {
-    const a = $('#bgm'), btn = $('.snd'); if (!a || !btn) return;
-    const LEVEL = 0.4, KEY = 'reelio-sound';
-    let want = 'on'; try { if (localStorage.getItem(KEY) === 'off') want = 'off'; } catch (e) {}
-    let gain = null, ctx = null, raf = 0, playing = false;
-    // iPhones ignore element volume, so there the sound is routed through a Web Audio gain node instead
-    a.volume = 0.5; const volLocked = Math.abs(a.volume - 0.5) > 0.01; a.volume = 0;
-    const setVol = v => { if (gain) gain.gain.value = v; else a.volume = Math.max(0, Math.min(1, v)); };
-    const getVol = () => (gain ? gain.gain.value : a.volume);
-    function fade(to, ms, done) {
-      cancelAnimationFrame(raf); const from = getVol(), t0 = performance.now();
-      const step = t => { const k = Math.min(1, (t - t0) / ms); setVol(from + (to - from) * k * (2 - k)); if (k < 1) raf = requestAnimationFrame(step); else if (done) done(); };
-      raf = requestAnimationFrame(step);
-    }
-    function useWebAudio() {
-      if (gain || !volLocked) return;
-      try { const AC = window.AudioContext || window.webkitAudioContext; ctx = new AC(); const src = ctx.createMediaElementSource(a); gain = ctx.createGain(); gain.gain.value = 0; src.connect(gain).connect(ctx.destination); a.volume = 1; } catch (e) { gain = null; }
-    }
-    function show(state) { btn.dataset.state = state; const on = state === 'on'; btn.setAttribute('aria-pressed', String(on)); btn.setAttribute('aria-label', on ? 'Mute music' : 'Play music'); }
-    function pop() { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
-    const evs = ['pointerdown', 'keydown', 'touchend'];
-    function unlock(e) { if (e.target && e.target.closest && e.target.closest('.snd')) return; if (want === 'on' && !playing) start(true); }
-    const arm = () => evs.forEach(n => addEventListener(n, unlock, { capture: true, passive: true }));
-    const disarm = () => evs.forEach(n => removeEventListener(n, unlock, { capture: true }));
-    function start(gesture) {
-      if (gesture) useWebAudio();
-      if (ctx && ctx.state === 'suspended') ctx.resume();
-      setVol(0);
-      return a.play().then(() => { playing = true; show('on'); disarm(); fade(LEVEL, 1400); }, () => { playing = false; if (want === 'on') show('idle'); });
-    }
-    function stop() { playing = false; show('off'); fade(0, 350, () => { if (!playing) a.pause(); }); }
-    btn.addEventListener('click', () => {
-      pop();
-      if (playing) { want = 'off'; stop(); } else { want = 'on'; start(true); }
-      try { localStorage.setItem(KEY, want); } catch (e) {}
-    });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { if (playing) { a.pause(); a.dataset.resume = '1'; } }
-      else if (a.dataset.resume) { delete a.dataset.resume; a.play().catch(() => {}); }
-    });
-    a.addEventListener('error', () => { playing = false; show('off'); });
-    // browsers block sound until the visitor interacts, so try now and otherwise start on the first tap, click or key
-    if (want === 'off') show('off'); else { show('idle'); arm(); start(false); }
-  })();
-
   /* ---------- menu + anchors ---------- */
   const menu = $('#menu'), menuBtn = $('.nav-menu');
   function openMenu() { menu.hidden = false; menuBtn.setAttribute('aria-expanded', 'true'); menuBtn.querySelector('span').textContent = 'Close'; root.classList.add('menu-open'); lenis && lenis.stop(); const a = menu.querySelector('a'); a && a.focus(); }
@@ -1497,7 +1553,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
     // intro
     const intro = { v: reduce ? 1 : 0 };
     const startIntro = () => { if (hasG && !reduce) gsap.to(intro, { v: 1, duration: 2.4, ease: 'expo.out' }); else intro.v = 1; };
-    setTimeout(startIntro, reduce ? 0 : 1050);
+    (window.reelioEntered || new Promise(r => setTimeout(r, 1800))).then(() => setTimeout(startIntro, reduce ? 0 : 160));
 
     let phase = 0, time = 0, velS = 0;
     const easeBack = t => { const c1 = 1.5, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); };
