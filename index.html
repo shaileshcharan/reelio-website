@@ -457,9 +457,8 @@ html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opa
 @media (max-width:900px){.kit-copy,.collage{grid-column:1/-1}}
 
 /* plans */
-.plans-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(16px,2vw,28px);align-items:stretch}
+.plans-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(16px,2vw,28px);align-items:stretch}
 .plan{border-radius:28px;padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:22px;min-width:0;position:relative;overflow:hidden}
-.plan-free{background:var(--paper);color:var(--ink)}
 .plan-month{background:var(--crimson);color:var(--white)}
 .plan-tag{align-self:flex-start;font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;text-transform:uppercase;padding:.6em 1em;border-radius:999px;background:var(--red);color:var(--white)}
 .plan-month .plan-tag{background:var(--white);color:var(--crimson)}
@@ -472,7 +471,6 @@ html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opa
 .price s{font-size:clamp(1.3rem,2vw,1.9rem);opacity:.6;text-decoration-thickness:3px}
 .price strong{font-size:clamp(3rem,6vw,5.6rem);font-weight:900}
 .price span{font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;text-transform:uppercase;font-weight:500}
-.plan-free .price strong{color:var(--red)}
 .fine{font-size:.8rem;color:var(--muted)}
 .plan-month .fine{color:var(--white)}
 .quote{margin:0;padding:16px 20px;border-radius:18px;background:var(--ink);color:var(--white);font-weight:600;font-style:italic;line-height:1.4}
@@ -493,8 +491,13 @@ html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opa
 .totals dt{font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.08em;text-transform:uppercase}
 .totals dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums}
 .plan-month .btn{--bg:var(--white);--fg:var(--crimson)}
-.plan-free .btn{--bg:var(--red);--fg:var(--white)}
-@media (max-width:980px){.plans-grid{grid-template-columns:1fr}}
+.plan-solo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(28px,4vw,64px);align-items:stretch}
+.plan-main,.plan-side{display:flex;flex-direction:column;gap:22px;min-width:0}
+.plan-side{padding:clamp(18px,2.2vw,30px);border-radius:22px;background:rgba(0,0,0,.16);border:1.5px solid var(--line-red);align-self:start}
+.plan-side-label{margin:0;font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.plan-month .checks li{border-color:var(--line-red)}
+.plan-month .checks svg{background:var(--white);color:var(--crimson)}
+@media (max-width:980px){.plan-solo{grid-template-columns:1fr}.plan-side{align-self:stretch}}
 @media (max-width:520px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* contact */
@@ -609,7 +612,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
-    <a class="btn btn-small nav-cta" href="#plans">Free week <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    <a class="btn btn-small nav-cta" href="#plans">Get started <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
     <button class="snd" type="button" data-state="idle" aria-pressed="false" aria-label="Play music"><svg class="spk" viewBox="0 0 24 24" aria-hidden="true"><path class="spk-cone" d="M3.6 9.1h3.3l4.5-3.7c.6-.5 1.4-.1 1.4.7v11.8c0 .8-.8 1.2-1.4.7l-4.5-3.7H3.6c-.6 0-1-.4-1-1V10.1c0-.6.4-1 1-1z"/><path class="spk-w1" pathLength="1" d="M15.7 9.2a4 4 0 0 1 0 5.6"/><path class="spk-w2" pathLength="1" d="M18.4 6.5a7.8 7.8 0 0 1 0 11"/><path class="spk-x" pathLength="1" d="M16 9.6l4.8 4.8M20.8 9.6L16 14.4"/></svg></button>
     <audio id="bgm" src="paper-planes.mp3" loop preload="auto"></audio>
     <button class="nav-menu" type="button" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i><span>Menu</span></button>
@@ -753,7 +756,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
             <li>Instagram growth</li><li>Content</li><li>Ads</li><li>Outreach</li>
           </ul>
           <div class="hero-ctas">
-            <a class="btn" href="#plans">Start a free week <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn" href="#plans">See the plan <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <a class="btn btn-ghost" href="#work">See the work</a>
           </div>
         </div>
@@ -1032,35 +1035,27 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
     <div class="wrap">
       <div class="sec-head">
         <p class="label">Plans</p>
-        <h2 class="display h1 reveal">Start free. Scale when it works.</h2>
-        <p class="lede">Try a full week on us first. If the growth is real, move to the monthly plan.</p>
+        <h2 class="display h1 reveal">One plan. Real growth.</h2>
+        <p class="lede">Content, storytelling, ads and branding for your Instagram, handled every week by one team.</p>
       </div>
       <div class="plans-grid">
-        <article class="plan plan-free">
-          <p class="plan-tag">Limited free offer</p>
-          <h3>1 Week Free Plan</h3>
-          <p class="plan-q">Not sure we're the right fit?</p>
-          <p>We'll manage your Instagram account for a complete week, with reels, stories and profile setup, free of charge. See genuine growth before you invest anything.</p>
-          <ul class="checks">
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>1 post</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>2 reels</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>10–14 engaging stories</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>1–5 highlights</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Username and bio optimization</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>1 carousel template</li>
-          </ul>
-          <div class="price"><s>₹12,500</s><strong>Free</strong></div>
-          <p class="fine">Transport and equipment charges apply based on location.</p>
-          <blockquote class="quote">“If you don't see a difference, you walk away. No questions asked.”</blockquote>
-          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/919381894142?text=Hi%20REELIO!%20I'd%20like%20to%20claim%20the%201%20Week%20Free%20Plan%20for%20my%20business.">Claim the free week <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
-        </article>
-        <article class="plan plan-month">
-          <div class="plan-top">
+        <article class="plan plan-month plan-solo">
+          <div class="plan-main">
             <p class="plan-tag">Full-month plan</p>
             <div class="price"><s>₹50,000</s><strong>₹30,000</strong><span>/ month</span></div>
+            <h3>Full-Month Instagram Growth Plan</h3>
+            <p>We take care of content, storytelling, ads and branding every week, so you can focus on running the business. We make your Instagram work for you.</p>
+            <ul class="checks">
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Reels, posts and stories every week</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Meta ads setup, targeting and weekly optimization</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Username, bio and highlights setup</li>
+              <li><svg aria-hidden="true"><use href="#i-check"/></svg>Carousel templates in your brand style</li>
+            </ul>
+            <p class="fine">Transport and equipment charges apply based on location.</p>
+            <a class="btn" target="_blank" rel="noopener" href="https://wa.me/919381894142?text=Hi%20REELIO!%20I'm%20interested%20in%20the%20Full-Month%20Instagram%20Growth%20Plan.">Start the full month <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
-          <h3>Full-Month Instagram Growth Plan</h3>
-          <p>We take care of content, storytelling, ads and branding every week, so you can focus on running the business. We make your Instagram work for you.</p>
+          <div class="plan-side">
+          <p class="plan-side-label">Week by week</p>
           <div class="weeks">
             <div class="tablist" role="tablist" aria-label="Deliverables by week">
               <button type="button" role="tab" id="tab-1" aria-controls="wk-1" aria-selected="true">Week 1</button>
@@ -1088,7 +1083,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
             <div><dt>·</dt><dd>4 carousels</dd></div>
             <div><dt>·</dt><dd>2–6 ads</dd></div>
           </dl>
-          <a class="btn" target="_blank" rel="noopener" href="https://wa.me/919381894142?text=Hi%20REELIO!%20I'm%20interested%20in%20the%20Full-Month%20Instagram%20Growth%20Plan.">Start the full month <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
         </article>
       </div>
     </div>
@@ -1123,8 +1118,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
             <fieldset class="field">
               <legend>Which plan?</legend>
               <div class="chips">
-                <input type="radio" name="plan" id="p-free" value="the 1 Week Free Plan" checked><label for="p-free">1 Week Free</label>
-                <input type="radio" name="plan" id="p-month" value="the Full-Month Instagram Growth Plan"><label for="p-month">Full month · ₹30,000</label>
+                <input type="radio" name="plan" id="p-month" value="the Full-Month Instagram Growth Plan" checked><label for="p-month">Full month · ₹30,000</label>
                 <input type="radio" name="plan" id="p-unsure" value=""><label for="p-unsure">Not sure yet</label>
               </div>
             </fieldset>
@@ -1313,10 +1307,25 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
     const imgs = $$('img', float);
     const qx = gsap.quickTo(float, 'x', { duration: 0.6, ease: 'power3' }), qy = gsap.quickTo(float, 'y', { duration: 0.6, ease: 'power3' });
     gsap.set(float, { xPercent: -50, yPercent: -50 });
-    let lx = 0;
+    let lx = 0, cur = null, px = -1, py = -1, ticking = false;
+    // show the card for one row, or hide it (row = null). Scrolling never fires pointerleave,
+    // so the row under the pointer is re-checked on every scroll as well.
+    const showFor = row => {
+      if (row === cur) return; cur = row;
+      if (row) { imgs.forEach((im, i) => im.classList.toggle('on', String(i) === row.dataset.img)); gsap.to(float, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out', overwrite: 'auto' }); }
+      else gsap.to(float, { opacity: 0, scale: 0.4, duration: 0.35, ease: 'power3.in', overwrite: 'auto' });
+    };
+    const rowAt = (x, y) => { if (x < 0) return null; const el = document.elementFromPoint(x, y); return el && el.closest ? el.closest('.svc') : null; };
+    const recheck = () => { ticking = false; showFor(rowAt(px, py)); };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(recheck); } };
+    addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; }, { passive: true });
+    addEventListener('scroll', onScroll, { passive: true });
+    if (lenis) lenis.on('scroll', onScroll);
+    document.documentElement.addEventListener('pointerleave', () => { px = py = -1; showFor(null); });
+    addEventListener('blur', () => showFor(null));
     $$('.svc').forEach(row => {
-      row.addEventListener('pointerenter', () => { imgs.forEach((im, i) => im.classList.toggle('on', String(i) === row.dataset.img)); gsap.to(float, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out' }); });
-      row.addEventListener('pointerleave', () => gsap.to(float, { opacity: 0, scale: 0.4, duration: 0.4, ease: 'power3.in' }));
+      row.addEventListener('pointerenter', e => { px = e.clientX; py = e.clientY; qx(e.clientX + 40); qy(e.clientY); showFor(row); });
+      row.addEventListener('pointerleave', e => { const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('.svc') : null; showFor(to); });
       row.addEventListener('pointermove', e => { qx(e.clientX + 40); qy(e.clientY); const v = e.clientX - lx; lx = e.clientX; gsap.to(float, { rotation: clamp(v * 0.6, -12, 12), duration: 0.5, overwrite: 'auto' }); });
     });
   }
