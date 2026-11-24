@@ -417,6 +417,81 @@ html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opa
   .phones .arrow{width:24px;height:24px}
 }
 
+/* case study 02: juniors' bake */
+.jb{--cookie:#F9BD58;--choc:#6B3A0E;position:relative;overflow:hidden;padding-block:clamp(88px,12vw,180px)}
+.jb::before{content:"";position:absolute;right:-12vw;top:-10vw;width:46vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--cookie) 34%,transparent),transparent 68%);pointer-events:none}
+.jb-grid{position:relative;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(40px,6vw,110px);align-items:center}
+.jb-copy{display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(22px,2.6vw,34px);min-width:0}
+.jb-head{display:flex;align-items:center;gap:clamp(14px,2vw,28px);min-width:0}
+.jb-badge{position:relative;width:clamp(92px,10vw,148px);aspect-ratio:1;flex:none}
+.jb-badge .burst{position:absolute;inset:0;width:100%;height:100%;fill:var(--cookie);animation:spin 22s linear infinite}
+.jb-badge img{position:absolute;left:8%;top:12%;width:84%;height:auto;animation:wave 3.2s var(--ease) infinite;transform-origin:50% 90%}
+@keyframes wave{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg) translateY(-3%)}}
+.jb-title{font-size:clamp(2.3rem,5.6vw,6.6rem);line-height:.84;min-width:0}
+.jb-title span{color:var(--red)}
+.jb-pull{margin:0;font-family:var(--f-display);font-weight:760;font-stretch:112%;font-size:clamp(1.5rem,2.6vw,2.4rem);line-height:1.04;letter-spacing:-.02em;text-wrap:balance;max-width:22ch}
+.jb .meta div{border-top-color:var(--line-paper)}
+.jb .meta dt{color:var(--red)}
+.jb-steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:st}
+.jb-steps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;padding-block:14px;border-top:1.5px solid var(--line-paper);counter-increment:st}
+.jb-steps li:last-child{border-bottom:1.5px solid var(--line-paper)}
+.jb-steps li::before{content:"0" counter(st);grid-row:1/span 2;font-family:var(--f-mono);font-size:var(--t-label);letter-spacing:.1em;color:var(--red);padding-top:.3em}
+.jb-steps b{font-family:var(--f-display);font-weight:850;font-stretch:125%;text-transform:uppercase;font-size:var(--t-3);line-height:1}
+.jb-steps span{font-size:var(--t-small);line-height:1.5;color:var(--muted)}
+.jb-hl{display:grid;gap:12px}
+.jb-hl ul{list-style:none;margin:0;padding:0;display:flex;gap:clamp(10px,1.4vw,18px);flex-wrap:wrap}
+.jb-hl li{display:grid;justify-items:center;gap:6px;font-size:.66rem;font-weight:600;width:64px;text-align:center;line-height:1.2}
+.jb-hl i{width:58px;height:58px;border-radius:50%;background:#2A1406;display:grid;place-items:center;box-shadow:0 0 0 2px var(--paper),0 0 0 3.5px var(--cookie);transition:transform .4s var(--ease)}
+.jb-hl li:hover i{transform:translateY(-4px) rotate(-6deg)}
+.jb-hl img{width:74%;height:auto}
+.jb-stage{position:relative;justify-self:center;width:min(100%,420px);min-width:0;display:grid;gap:16px}
+.jb-reel{width:100%;box-shadow:0 50px 90px -40px rgba(28,7,9,.55);transform:rotate(-2.2deg)}
+.jb-reel video,.jb-reel img.poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:none}
+.jb-reel .reel-bar i{animation:none;transform:scaleX(var(--prog,0));transition:transform .25s linear}
+.jb-sticker{position:absolute;z-index:4;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;background:var(--red);color:var(--white);padding:.7em 1em;border-radius:999px;box-shadow:0 14px 26px -12px rgba(138,7,19,.7)}
+.jb-sticker.s1{left:-18px;top:16%;transform:rotate(-8deg)}
+.jb-sticker.s2{right:-14px;top:46%;transform:rotate(6deg);background:var(--cookie);color:var(--choc)}
+.jb-peek{position:absolute;z-index:5;right:-30px;bottom:96px;width:clamp(70px,7vw,104px);transform:rotate(12deg);filter:drop-shadow(0 12px 18px rgba(107,58,14,.35));animation:wave 2.6s var(--ease) infinite;pointer-events:none}
+.jb-film{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;padding:8px;border-radius:12px;background:var(--ink);position:relative}
+.jb-film::before,.jb-film::after{content:"";position:absolute;left:8px;right:8px;height:4px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 6px,transparent 6px 14px)}
+.jb-film::before{top:2px}.jb-film::after{bottom:2px}
+.jb-film li{list-style:none;position:relative;border-radius:6px;overflow:hidden;aspect-ratio:9/14;opacity:.42;filter:grayscale(.6);transition:opacity .35s,filter .35s,transform .35s var(--ease)}
+.jb-film li.on{opacity:1;filter:none;transform:translateY(-3px);box-shadow:0 0 0 2px var(--red)}
+.jb-film img{width:100%;height:100%;object-fit:cover;display:block}
+.jb-film span{position:absolute;left:0;right:0;bottom:0;padding:10px 4px 4px;font-family:var(--f-mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--white);text-align:center;background:linear-gradient(transparent,rgba(28,7,9,.85))}
+.jb-film{margin:0;padding-block:12px}
+@media (max-width:980px){
+  .jb-grid{grid-template-columns:minmax(0,1fr);row-gap:26px}
+  .jb-copy{display:contents}
+  .jb-copy>*{order:5}
+  .jb-copy>.label{order:1}.jb-head{order:2}.jb-pull{order:3}
+  .jb-stage{order:4;width:min(100%,380px);margin-block:14px 18px}
+  .jb-title{font-size:clamp(2.3rem,11vw,5.6rem)}
+  .jb-sticker.s1{left:-6px}.jb-sticker.s2{right:-6px}.jb-peek{right:-10px}
+}
+@media (max-width:480px){.jb-film span{font-size:.42rem}.jb-hl li{width:56px}.jb-hl i{width:50px;height:50px}}
+
+/* on set with reelio */
+.onset{overflow:hidden}
+.onset-strip{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(12px,1.6vw,22px);align-items:start}
+.onset-card{position:relative;margin:0;transform:rotate(var(--r,0deg)) translateY(var(--y,0px));transition:transform .6s var(--ease)}
+.onset-card:nth-child(1){--r:-3deg}.onset-card:nth-child(2){--r:2deg;--y:36px}.onset-card:nth-child(3){--r:-1.5deg;--y:8px}.onset-card:nth-child(4){--r:3deg;--y:44px}.onset-card:nth-child(5){--r:-2.5deg;--y:12px}
+.onset-card:hover{transform:rotate(0deg) translateY(calc(var(--y,0px) - 8px)) scale(1.03);z-index:3}
+.onset-media{position:relative;aspect-ratio:3/4;border-radius:16px;overflow:hidden;background:var(--crimson);border:6px solid var(--white);box-shadow:0 30px 60px -30px rgba(28,7,9,.7)}
+.onset-media video,.onset-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.onset-card::before{content:"";position:absolute;z-index:2;left:50%;top:-12px;width:74px;height:24px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,247,244,.78);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.onset-card figcaption{margin-top:12px;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;line-height:1.5}
+.onset-card figcaption b{display:block;font-family:var(--f-display);font-weight:850;font-stretch:125%;font-size:var(--t-3);letter-spacing:-.01em;line-height:1;margin-bottom:4px}
+.onset-rec{position:absolute;z-index:2;left:10px;top:10px;display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.55rem;letter-spacing:.12em;color:var(--white);text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.onset-rec::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 2px var(--white);animation:blink 1.2s steps(2,start) infinite}
+@keyframes blink{to{visibility:hidden}}
+@media (max-width:980px){
+  .onset-strip{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:22px var(--gutter) 40px;margin-inline:calc(var(--gutter) * -1);-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .onset-strip::-webkit-scrollbar{display:none}
+  .onset-card{flex:0 0 min(64vw,260px);scroll-snap-align:center}
+}
+@media (prefers-reduced-motion:reduce){.jb-badge img,.jb-peek,.onset-rec::before{animation:none}}
+
 /* collabs */
 .collabs{padding-block:clamp(40px,6vw,96px) clamp(88px,12vw,180px)}
 .collabs-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:clamp(16px,2vw,32px);row-gap:28px;align-items:end;border-top:1.5px solid var(--line-red);padding-top:clamp(40px,5vw,72px)}
@@ -599,7 +674,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
 
 <header class="nav" data-on="red">
   <div class="nav-progress" aria-hidden="true">
-    <span class="seg" data-seg="about"><i></i></span><span class="seg" data-seg="services"><i></i></span><span class="seg" data-seg="niches"><i></i></span><span class="seg" data-seg="work"><i></i></span><span class="seg" data-seg="kit"><i></i></span><span class="seg" data-seg="plans"><i></i></span><span class="seg" data-seg="contact"><i></i></span>
+    <span class="seg" data-seg="about"><i></i></span><span class="seg" data-seg="services"><i></i></span><span class="seg" data-seg="niches"><i></i></span><span class="seg" data-seg="work"><i></i></span><span class="seg" data-seg="juniors-bake"><i></i></span><span class="seg" data-seg="on-set"><i></i></span><span class="seg" data-seg="kit"><i></i></span><span class="seg" data-seg="plans"><i></i></span><span class="seg" data-seg="contact"><i></i></span>
   </div>
   <div class="nav-inner wrap">
     <a class="nav-logo" href="#top" aria-label="REELIO, back to top"><svg viewBox="0 0 1307 330" aria-hidden="true"><use href="#logo"/></svg></a>
@@ -985,6 +1060,84 @@ li>Creators</li><li>Campaigns</li></ul>
     </div>
   </section>
 
+  <section class="jb s-paper" id="juniors-bake" data-surface="paper">
+    <div class="wrap jb-grid">
+      <div class="jb-copy">
+        <p class="label">Case study 02 · Kids' workshops</p>
+        <div class="jb-head">
+          <div class="jb-badge" aria-hidden="true"><svg class="burst"><use href="#burst"/></svg><img src="jb-mascot.png" alt="" width="440" height="349"></div>
+          <h2 class="display jb-title reveal">Juniors'<br><span>Bake</span></h2>
+        </div>
+        <p class="jb-pull">From a plain sponge to a superhero cake, we filmed every layer.</p>
+        <dl class="meta">
+          <div><dt>Location</dt><dd>Hyderabad</dd></div>
+          <div><dt>Niche</dt><dd>Kids' baking &amp; craft workshops</dd></div>
+          <div><dt>The brief</dt><dd>Reach parents of kids aged 4 to 12</dd></div>
+        </dl>
+        <ol class="jb-steps">
+          <li><b>Shoot</b><span>Two on-location shoots: a lit studio cake film and an outdoor story shoot at Aaromale.</span></li>
+          <li><b>Edit</b><span>The cake film, promo reels for each workshop and event posters.</span></li>
+          <li><b>Brand</b><span>A refreshed logo and a full set of highlight covers in the cookie mascot style.</span></li>
+          <li><b>Ads &amp; page</b><span>Meta ads aimed at parents, plus day-to-day Instagram management.</span></li>
+        </ol>
+        <div class="jb-hl">
+          <p class="label">Highlight covers we designed</p>
+          <ul>
+            <li><i><img src="jb-mascot.png" alt="" width="440" height="349"></i>Junior Bakers</li>
+            <li><i><img src="jb-mascot.png" alt="" width="440" height="349"></i>Upcoming</li>
+            <li><i><img src="jb-mascot.png" alt="" width="440" height="349"></i>Workshop</li>
+            <li><i><img src="jb-mascot.png" alt="" width="440" height="349"></i>Feedback</li>
+            <li><i><img src="jb-mascot.png" alt="" width="440" height="349"></i>Who we are</li>
+          </ul>
+        </div>
+      </div>
+      <div class="jb-stage">
+        <span class="jb-sticker s1">Shot by REELIO</span>
+        <span class="jb-sticker s2">Studio · 2 cameras</span>
+        <img class="jb-peek" src="jb-mascot.png" alt="" width="440" height="349">
+        <div class="reel-card jb-reel">
+          <img class="poster" src="jb-loop-poster.jpg" alt="" width="720" height="1280">
+          <video id="jb-video" muted loop playsinline preload="metadata" poster="jb-loop-poster.jpg" aria-label="Juniors' Bake cake film: the founder levels, stacks and frosts a layer cake, ending on a finished superhero birthday cake"><source src="jb-loop.mp4" type="video/mp4"></video>
+          <div class="reel-ui">
+            <div class="reel-bar"><i></i></div>
+            <div class="reel-top"><span>Reels</span><svg aria-hidden="true"><use href="#i-cam"/></svg></div>
+            <div class="reel-rail" aria-hidden="true"><span><svg><use href="#i-heart"/></svg></span><span><svg><use href="#i-comment"/></svg></span><span><svg><use href="#i-send"/></svg></span></div>
+            <div class="reel-meta">
+              <h3 class="reel-title">The cake film</h3>
+              <p class="reel-handle"><svg aria-hidden="true" viewBox="1008 0 299 330"><use href="#lp-o"/></svg>juniors_bake</p>
+              <p class="reel-cap">Level. Stack. Frost. Reveal.</p>
+              <p class="reel-audio"><svg aria-hidden="true"><use href="#i-note"/></svg>Edited by REELIO</p>
+            </div>
+          </div>
+        </div>
+        <ol class="jb-film" aria-hidden="true">
+          <li class="on"><img src="jb-ch1.jpg" alt="" width="240" height="427"><span>Level</span></li>
+          <li><img src="jb-ch2.jpg" alt="" width="240" height="427"><span>Stack</span></li>
+          <li><img src="jb-ch3.jpg" alt="" width="240" height="427"><span>Frost</span></li>
+          <li><img src="jb-ch4.jpg" alt="" width="240" height="427"><span>Finish</span></li>
+          <li><img src="jb-ch5.jpg" alt="" width="240" height="427"><span>Reveal</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec s-red onset" id="on-set" data-surface="red">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Behind the scenes</p>
+        <h2 class="display h1 reveal">On set with REELIO</h2>
+        <p class="lede">Lights, lenses and a crew that shows up. Every shoot is planned, lit and filmed properly, in a studio or out on location.</p>
+      </div>
+      <ul class="onset-strip">
+        <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-studio-cam.jpg" data-onset><source src="onset-studio-cam.mp4" type="video/mp4"></video></div><figcaption><b>Light check</b>Studio · Juniors' Bake</figcaption></figure></li>
+        <li class="onset-card"><figure style="margin:0"><div class="onset-media"><img src="onset-studio.jpg" alt="The REELIO crew with a camera on a tripod and a large softbox light in a baking studio" loading="lazy" width="596" height="795"></div><figcaption><b>Camera ready</b>Studio · 3-point light</figcaption></figure></li>
+        <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-outdoor-2.jpg" data-onset><source src="onset-outdoor-2.mp4" type="video/mp4"></video></div><figcaption><b>Outdoor setup</b>Aaromale · Story shoot</figcaption></figure></li>
+        <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-outdoor.jpg" data-onset><source src="onset-outdoor.mp4" type="video/mp4"></video></div><figcaption><b>Surprise guest</b>Aaromale · The cat approved</figcaption></figure></li>
+        <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-crew.jpg" data-onset><source src="onset-crew.mp4" type="video/mp4"></video></div><figcaption><b>The crew</b>Wrap · Aaromale</figcaption></figure></li>
+      </ul>
+    </div>
+  </section>
+
   <section class="collabs s-crimson" id="collabs" data-surface="crimson">
     <div class="wrap collabs-grid">
       <p class="label">Brand collaborations</p>
@@ -1287,6 +1440,27 @@ li>Creators</li><li>Campaigns</li></ul>
     c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(); const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5; c.style.setProperty('--ry', (px * 14).toFixed(2) + 'deg'); c.style.setProperty('--rx', (-py * 12).toFixed(2) + 'deg'); });
     c.addEventListener('pointerleave', () => { c.style.setProperty('--ry', '0deg'); c.style.setProperty('--rx', '0deg'); });
   });
+
+  /* ---------- juniors' bake reel + on-set clips ---------- */
+  (() => {
+    const motionOK = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const v = $('#jb-video'), reel = $('.jb-reel');
+    const chips = $$('.jb-film li'), marks = [0, 2.03, 3.63, 5.23, 7.17];
+    if (v && 'IntersectionObserver' in window) {
+      v.addEventListener('timeupdate', () => {
+        const t = v.currentTime; let k = 0; marks.forEach((m, i) => { if (t >= m) k = i; });
+        chips.forEach((c, i) => c.classList.toggle('on', i === k));
+        if (reel && v.duration) reel.style.setProperty('--prog', (t / v.duration).toFixed(3));
+      });
+      v.addEventListener('playing', () => { const p = reel && reel.querySelector('img.poster'); if (p) p.remove(); }, { once: true });
+      if (motionOK) new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? v.play().catch(() => {}) : v.pause()), { threshold: 0.35 }).observe(v);
+    }
+    const clips = $$('video[data-onset]');
+    if (clips.length && motionOK && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { const c = e.target; if (e.isIntersecting) { if (c.preload === 'none') { c.preload = 'auto'; c.load(); } c.play().catch(() => {}); } else c.pause(); }), { threshold: 0.3 });
+      clips.forEach(c => io.observe(c));
+    }
+  })();
 
   /* ---------- services hover reel ---------- */
   const float = $('.svc-float');
