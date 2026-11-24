@@ -490,7 +490,15 @@ html.gated.entering .leader-enter{transform:translate(-50%,-50%) scale(1.25);opa
   .onset-strip::-webkit-scrollbar{display:none}
   .onset-card{flex:0 0 min(64vw,260px);scroll-snap-align:center}
 }
-@media (prefers-reduced-motion:reduce){.jb-badge img,.jb-peek,.onset-rec::before{animation:none}}
+.onset-swipe{display:none;align-items:center;gap:14px;margin-top:-14px;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase}
+.onset-swipe-label{display:inline-flex;align-items:center;gap:.7em;white-space:nowrap}
+.onset-swipe-label svg{width:28px;height:12px;animation:swipeNudge 1.6s var(--ease) infinite}
+.onset-swipe-track{flex:1;height:2px;background:var(--line-red);border-radius:2px;overflow:hidden}
+.onset-swipe-track i{display:block;height:100%;width:20%;background:var(--white);border-radius:2px;transform:translateX(calc(var(--p,0) * 400%));transition:transform .25s ease-out}
+.onset-swipe-count{font-variant-numeric:tabular-nums;white-space:nowrap}
+@keyframes swipeNudge{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+@media (max-width:980px){.onset-swipe{display:flex;margin-top:0}.onset-card:nth-child(n){--y:0px}.onset-card:nth-child(even){--y:14px}}
+@media (prefers-reduced-motion:reduce){.jb-badge img,.jb-peek,.onset-rec::before,.onset-swipe-label svg{animation:none}}
 
 /* collabs */
 .collabs{padding-block:clamp(40px,6vw,96px) clamp(88px,12vw,180px)}
@@ -836,7 +844,7 @@ fieldset.field{border:0;margin:0;padding:0;grid-column:1/-1}
           </div>
         </div>
         <div class="hero-side">
-          <p>We shoot, edit and grow Instagram for businesses of every kind. Reels built to turn scrolls into customers.</p>
+          <p>REELIO is an all-in-one creative and growth agency, helping businesses in your niche grow on Instagram.</p>
           <span class="mono drag-hint" aria-hidden="true"><svg><use href="#i-drag"/></svg> Drag the reel</span>
         </div>
       </div>
@@ -1135,6 +1143,11 @@ li>Creators</li><li>Campaigns</li></ul>
         <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-outdoor.jpg" data-onset><source src="onset-outdoor.mp4" type="video/mp4"></video></div><figcaption><b>Surprise guest</b>Aaromale · The cat approved</figcaption></figure></li>
         <li class="onset-card"><figure style="margin:0"><div class="onset-media"><span class="onset-rec">REC</span><video muted loop playsinline preload="none" poster="onset-crew.jpg" data-onset><source src="onset-crew.mp4" type="video/mp4"></video></div><figcaption><b>The crew</b>Wrap · Aaromale</figcaption></figure></li>
       </ul>
+      <div class="onset-swipe" aria-hidden="true">
+        <span class="onset-swipe-label">Swipe to see more <svg><use href="#i-drag"/></svg></span>
+        <span class="onset-swipe-track"><i></i></span>
+        <span class="onset-swipe-count"><b>01</b> / 05</span>
+      </div>
     </div>
   </section>
 
@@ -1459,6 +1472,28 @@ li>Creators</li><li>Campaigns</li></ul>
     if (clips.length && motionOK && 'IntersectionObserver' in window) {
       const io = new IntersectionObserver(es => es.forEach(e => { const c = e.target; if (e.isIntersecting) { if (c.preload === 'none') { c.preload = 'auto'; c.load(); } c.play().catch(() => {}); } else c.pause(); }), { threshold: 0.3 });
       clips.forEach(c => io.observe(c));
+    }
+    // mobile swipe strip: progress bar, counter and a one-time nudge so people know it scrolls
+    const strip = $('.onset-strip'), swipe = $('.onset-swipe');
+    if (strip && swipe) {
+      const cards = $$('.onset-card', strip), bar = $('.onset-swipe-track', swipe), num = $('.onset-swipe-count b', swipe);
+      const upd = () => {
+        const max = strip.scrollWidth - strip.clientWidth; if (max <= 0) return;
+        const p = Math.min(1, Math.max(0, strip.scrollLeft / max));
+        bar.style.setProperty('--p', p.toFixed(3));
+        num.textContent = String(Math.round(p * (cards.length - 1)) + 1).padStart(2, '0');
+      };
+      strip.addEventListener('scroll', upd, { passive: true }); upd();
+      if (motionOK && 'IntersectionObserver' in window) {
+        const nio = new IntersectionObserver(es => es.forEach(e => {
+          if (!e.isIntersecting || strip.scrollWidth <= strip.clientWidth || strip.scrollLeft > 4) return;
+          nio.disconnect();
+          strip.style.scrollSnapType = 'none';
+          strip.scrollTo({ left: 90, behavior: 'smooth' });
+          setTimeout(() => { strip.scrollTo({ left: 0, behavior: 'smooth' }); setTimeout(() => { strip.style.scrollSnapType = ''; }, 600); }, 650);
+        }), { threshold: 0.6 });
+        nio.observe(strip);
+      }
     }
   })();
 
