@@ -2,12 +2,13 @@
 
 The website for REELIO, a cinematic social media agency from Hyderabad.
 
-- Live: https://reelio-agency.vercel.app
+- Live: https://www.reelio.agency
 - Hosting: Vercel. Every commit to `main` deploys automatically.
 
 ## What's here
 
-- `index.html` is the whole site: HTML, CSS and JS in one file. Three.js, GSAP and Lenis load from CDNs.
+- `index.html` holds the content and styles. `enter.js` runs the enter screen and music, `app.js` runs everything else (3D hero, animations, form). Three.js, GSAP and Lenis load from jsDelivr with integrity hashes.
+- `vercel.json` sets the security headers (Content-Security-Policy and others). See `SECURITY.md` before adding any new outside script, font or embed, and never put code in inline `<script>` tags or `onclick` attributes: the browser will block them.
 - `r01.jpg` to `r16.jpg` are the reel stills used in the 3D hero and the cards.
 - The other `.jpg`/`.png` files are photos used across the sections (`logo-card.jpg` is the About card, `edit-desk.jpg` is the video editing preview).
 - `favicon.svg`, `apple-touch-icon.png` and `og.jpg` are the icons and the link-preview image.
