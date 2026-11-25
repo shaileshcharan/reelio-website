@@ -62,7 +62,8 @@ Local tests ran in Chromium with the exact production headers enforced, at deskt
 - Tampered CDN file (simulated): **blocked** by the integrity check.
 - Script injected into the page at runtime, inline and from an outside domain: **blocked** by the CSP.
 - Framing the site: **blocked**.
-- Live header scan after deployment: see the result recorded in section 7.
+- Live header scan after deployment (securityheaders.com, 25 Nov 2026): **A+**, no missing headers, no warnings.
+- Live site rendered in a cloud browser after deployment: Three.js created the 3D hero canvas (`three.js r160`), and `app.js` ran (form preview and IST clock filled in). The libraries passed their integrity checks and the CSP in production.
 
 ## 5. Things deliberately not done
 
@@ -86,11 +87,11 @@ The biggest remaining risk is **account takeover**: whoever controls these accou
 Based on the tests above, the site is now in good shape for a static brochure site. **No website is unhackable**, and the main remaining exposure is the accounts in section 6.
 
 - Header scan before: **D**.
-- Header scan after deployment: recorded in the commit that follows this one.
+- Header scan after deployment: **A+** (securityheaders.com).
 
 ## 8. Rollback
 
-Any of these restores the pre-hardening version:
+Any of these restores the pre-hardening version (the hardening itself is commit `cb4545a`):
 
 - **Fastest:** Vercel dashboard → project → Deployments → pick the deployment of commit `01e52d8` → "Instant Rollback".
 - **Git:** `git revert <hardening commit>` and push to `main`.
